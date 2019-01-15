@@ -25,17 +25,18 @@ class AbstractTargeter(ABC):
 	
 	def __init__(self):
 		self.camera = PiCamera()
-		self.camera.resolution = (1920, 1088)
+		self.camera.resolution = (1024,768)
 		self.camera.framerate = 30
 		self.raw_capture = PiRGBArray(self.camera)
 		time.sleep(2) #let the camera warm up
 	
 	def get_targets(self):
-		while True: # TODO: Can put some kind of shutdown() method on the AbstractTargeter to check for here.
-			self.camera.capture(self.raw_capture, format="bgr", use_video_port=True)
-			yield self.get_targets_impl(self.raw_capture)
+		for frame in self.camera.capture_continuous(self.raw_capture, format="bgr", use_video_port=True):
+			# TODO: Can put some kind of shutdown() method 
+			# on the AbstractTargeter to check for here.
+			yield self.get_targets_impl(frame)
 			self.raw_capture.truncate(0)
-	
+		
 	@abstractmethod
 	def get_targets_impl(raw_capture):
 		pass
@@ -45,7 +46,7 @@ if __name__ == "__main__":
 	# being captured by the camera
 	
 	class DemoTarget(AbstractTargeter):
-		def get_targets_impl(self, raw_capture):
+		def get_targets_impl(self, frame):
 			return Target(0)
 	
 	d = DemoTarget()
