@@ -50,3 +50,8 @@ ln -s /usr/local/python/cv2/python-3.5/cv2.cpython-35m-arm-linux-gnueabihf.so cv
 
 * Revert swapsize back to 100 to avoid wearing out the SD card too quickly
 
+## Setting up wireless network
+
+The system is designed to be remotely accessed for debugging and telematics purposes.  To do this, we set up the Rasberry Pi to act as a wireless acess point, ensuring that even in areas without wirless networks, a seperate laptop can be used to access the pi.
+
+Follow (this guide)[https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md] to set up the rasbery pi as a wireless network.
