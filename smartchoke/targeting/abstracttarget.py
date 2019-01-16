@@ -4,7 +4,8 @@ import time
 import cv2
 from abc import ABC, abstractmethod
 
-class Target():
+
+class Target(object):
 	"""
 	This class encapsulates information about a target.  Currently the only 
 	thing we care about is distance from us (in meters) 
@@ -16,6 +17,7 @@ class Target():
 	def __str__(self):
 		return "Distance {0} meters".format(self.distance)
 
+
 class AbstractTargeter(ABC):
 	"""
 	This class provides access to the camera.  Classes that 
@@ -25,7 +27,7 @@ class AbstractTargeter(ABC):
 	
 	def __init__(self):
 		self.camera = PiCamera()
-		self.camera.resolution = (1024,768)
+		self.camera.resolution = (1920, 1088)
 		self.camera.framerate = 30
 		self.raw_capture = PiRGBArray(self.camera)
 		time.sleep(2) #let the camera warm up
@@ -38,12 +40,12 @@ class AbstractTargeter(ABC):
 			self.raw_capture.truncate(0)
 		
 	@abstractmethod
-	def get_targets_impl(raw_capture):
+	def get_targets_impl(self, frame):
 		pass
-	
+
+
 if __name__ == "__main__":
-	# Assume we're in demo mode and simply show whats 
-	# being captured by the camera
+	# Assume we're in demo mode and simply show whats being captured by the camera
 	
 	class DemoTarget(AbstractTargeter):
 		def get_targets_impl(self, frame):
@@ -53,7 +55,3 @@ if __name__ == "__main__":
 	for target in d.get_targets():
 		cv2.imshow("Frame", d.raw_capture.array)
 		key = cv2.waitKey(1) & 0xFF # This line is actually nessessary for anything to render
-
-	
-	
- 

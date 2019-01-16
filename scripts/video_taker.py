@@ -13,12 +13,16 @@ import time
 def record_video(filename):
     with picamera.PiCamera() as camera:
         time.sleep(2)
-        camera.resolution = (1024, 768)
+        camera.resolution = (1920, 1088)
+        camera.framerate = 30
+        camera.iso = 800
+        time.sleep(1)
+
         camera.start_recording('{0}.h264'.format(filename))
 
         try:
             while True:
-                camera.wait_recording(10)
+                camera.wait_recording(60)
         except KeyboardInterrupt:
             print("Control-C caught, stopping recording")
             camera.stop_recording()
