@@ -1,4 +1,5 @@
 from smartchoke.targeting.abstracttarget import AbstractTargeter, Target
+from smartchoke.targeting import show_frame
 import numpy as np
 import cv2
 import time 
@@ -19,5 +20,7 @@ class TrapTargeter(AbstractTargeter):
 		imask = mask > 0
 		orange = np.zeros_like(frame.array, np.uint8)
 		orange[imask] = frame.array[imask]
-		
+
+		show_frame("detected", orange, (640, 400))
+
 		return Target(distance=0)

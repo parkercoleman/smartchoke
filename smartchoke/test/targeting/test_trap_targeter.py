@@ -1,6 +1,8 @@
 from smartchoke.targeting.trap_targeter import TrapTargeter
+from smartchoke.targeting import show_frame
 import cv2
 import time
+import mock
 import unittest
 
 
@@ -16,11 +18,21 @@ def get_mocked_targeter(filename):
 
     def mock_get_targets(self):
         vcap = cv2.VideoCapture(filename)
+        mock_pi_array = mock.Mock()
+
+        i = 0
+
         while vcap.isOpened():
             ret, frame = vcap.read()
-            print(frame)
-            time.sleep(1)
-            yield self.get_targets_impl(frame)
+            mock_pi_array.array = frame
+
+            print("Frame {0}".format(i))
+            show_frame("capture", frame, (640, 400))
+            if not ret:
+                print("Could not read frame of file {0}".format(filename))
+                break
+            yield self.get_targets_impl(mock_pi_array)
+            i += 1
 
     tt.get_targets = mock_get_targets
     return tt

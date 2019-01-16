@@ -41,6 +41,13 @@ class AbstractTargeter(ABC):
 		
 	@abstractmethod
 	def get_targets_impl(self, frame):
+		"""
+		Concrete classes will need to implement this method.
+
+		:param frame: a picamera.array.PiRGBArray containing information about what the camera sees
+		:return: A Target object with information about any targets that are in the frame.
+		None if no targets are founds
+		"""
 		pass
 
 
